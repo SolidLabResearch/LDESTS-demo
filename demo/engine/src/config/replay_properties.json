@@ -1,0 +1,21 @@
+{
+	"port": "3001",
+	"__comment__" : "enter the location of your dataset folder below this in datasetFolders field. e.g. /home/data/",
+	"datasetFolders": "./data/",
+	"ldestsPod": "http://localhost:3000",
+	"ldestsName": "test",
+	"shape": {
+		"type": "SAMPLE URI HERE",
+		"identifier": "SAMPLE IDENTIFIER HERE",
+		"constants": {
+			"SAMPLE CONSTANT PATH HERE": ["ALL SAMPLE CONSTANT VALUES HERE"],
+			"OTHER SAMPLE CONSTANT PATHS HERE": ["..."]
+		},
+		"variables": {
+			"SAMPLE VARIABLE PATH HERE": "SAMPLE VARIABLE DATATYPE HERE"
+		}
+	},
+	"queryURIs": ["ALL SAMPLE CONSTANT FRAGMENT URIS HERE"],
+	"window": 5,
+	"resourceSize": 2500
+}
