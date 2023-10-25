@@ -42,6 +42,11 @@ async function buildStream() {
 
 /** init code **/
 
+// ensuring the default config isn't set with a simple check
+if (config.shape.type === "SAMPLE URI HERE") {
+	throw Error("The configuration config/replay_properties.json has not been correctly set!");
+}
+
 buildStream().then((result) => stream = result);
 app.use(cors());
 app.listen(port, () => {
@@ -230,11 +235,8 @@ async function advanceOneObservation() {
 		Logger.log("AdvanceOneObservation", "Retrieving all related information to the Observation being replayed.");
 		const finalResources: Quad[] = [];
 		for (const quad of store.match(sortedObservationSubjects[observationPointerTemp], null, null)) {
-			finalResources.push(quad as Quad);
+			stream.insertTriple(quad as Quad);
 		}
-		// inserting the resulting resources into the stream
-		Logger.log("AdvanceOneObservation", `Inserting ${finalResources.length} resources`)
-		await stream.insertAsStore(finalResources);
 		// manually flushing so the results are visible
 		await stream.flush();
 
@@ -271,7 +273,9 @@ app.get('/advanceAndPushObservationPointerToTheEnd', async (req, res) => {
 	observationPointer = observationPointer + resources.length;
 	Logger.log("AdvanceAndPushObservationPointerToTheEnd", `New pointer position: ${observationPointer}`);
 	// inserting the resulting resources into the stream
-	stream.insertAsStore(resources);
+	for (const triple of resources) {
+		stream.insertTriple(triple);
+	}
 	// manually flushing so the results are visible
 	// not awaiting these calls to finish, just scheduling them to happen, so we can respond to the call in a respectable time
 	stream.flush();
